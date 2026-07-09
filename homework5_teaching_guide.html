@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<title>CIS 521 – Homework 5 Teaching Guide</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Code+Pro:wght@400;600&family=Lato:wght@400;700&display=swap');
+:root{
+  --bg:#13131a;--surface:#1e1e2e;--border:#2e2e42;
+  --amber:#f5a623;--amber2:#ffcc70;
+  --green:#56d364;--blue:#79c0ff;--pink:#f778ba;--teal:#39d5c7;--red:#f07070;
+  --muted:#8b8ba7;--text:#e2e2f0;--code-bg:#0d1117;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Lato',sans-serif;font-size:16px;line-height:1.7}
+header{background:linear-gradient(135deg,#0f0f1a,#1a1030);border-bottom:2px solid var(--amber);padding:2.5rem 3rem}
+header .badge{background:var(--amber);color:#000;font-family:'Source Code Pro',monospace;font-weight:600;font-size:.75rem;padding:.3rem .7rem;border-radius:4px;letter-spacing:1px}
+header h1{font-family:'Playfair Display',serif;font-size:2rem;color:var(--amber2);margin-top:.4rem}
+header p{color:var(--muted);font-size:.95rem;margin-top:.3rem}
+nav{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1px solid var(--border);display:flex;overflow-x:auto}
+nav button{background:none;border:none;color:var(--muted);font-family:'Lato',sans-serif;font-size:.9rem;font-weight:700;padding:1rem 1.5rem;cursor:pointer;border-bottom:3px solid transparent;transition:color .2s,border-color .2s;white-space:nowrap}
+nav button:hover{color:var(--text)}
+nav button.active{color:var(--amber);border-bottom-color:var(--amber)}
+main{max-width:980px;margin:0 auto;padding:2.5rem 2rem 5rem}
+.section{display:none}.section.active{display:block}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.6rem 2rem;margin-bottom:1.8rem}
+.card-title{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--amber2);margin-bottom:.8rem;display:flex;align-items:center;gap:.6rem}
+.pill{display:inline-block;font-size:.7rem;font-weight:700;font-family:'Source Code Pro',monospace;letter-spacing:1px;text-transform:uppercase;padding:.2rem .6rem;border-radius:20px;margin-bottom:.5rem}
+.pill-mental{background:#1e3a5f;color:var(--blue)}
+.pill-approach{background:#2a3b1e;color:var(--green)}
+.pill-analogy{background:#3b2a1e;color:#f0a060}
+.pill-code{background:#2a1e3b;color:var(--pink)}
+.pill-warn{background:#3b1e1e;color:var(--red)}
+pre{background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:1.2rem 1.4rem;overflow-x:auto;margin:1rem 0;font-family:'Source Code Pro',monospace;font-size:.82rem;line-height:1.6}
+.kw{color:#ff7b72}.fn{color:#d2a8ff}.str{color:#a5d6ff}.cmt{color:#8b949e;font-style:italic}.num{color:#f8c555}.cls{color:#ffa657}
+.highlight-box{border-left:4px solid var(--amber);background:#1f1b00;padding:.9rem 1.2rem;border-radius:0 8px 8px 0;margin:1rem 0;font-size:.95rem}
+.warn-box{border-left:4px solid var(--red);background:#1f0000;padding:.9rem 1.2rem;border-radius:0 8px 8px 0;margin:1rem 0;font-size:.95rem}
+.green-box{border-left:4px solid var(--green);background:#001f0a;padding:.9rem 1.2rem;border-radius:0 8px 8px 0;margin:1rem 0;font-size:.95rem}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+@media(max-width:680px){.grid2{grid-template-columns:1fr}}
+.tree{font-family:'Source Code Pro',monospace;font-size:.82rem;color:var(--blue);background:var(--code-bg);border:1px solid var(--border);border-radius:8px;padding:1rem 1.2rem;line-height:1.9;white-space:pre;overflow-x:auto}
+h2{font-family:'Playfair Display',serif;font-size:1.7rem;color:var(--amber2);margin-bottom:1.4rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)}
+h3{font-size:1.05rem;font-weight:700;color:var(--text);margin:1.2rem 0 .5rem}
+p{margin-bottom:.7rem}
+ul,ol{margin:.5rem 0 .7rem 1.5rem}
+li{margin-bottom:.3rem}
+table{width:100%;border-collapse:collapse;font-size:.9rem;margin:1rem 0}
+th{background:#25253a;color:var(--amber);padding:.6rem 1rem;text-align:left}
+td{padding:.5rem 1rem;border-top:1px solid var(--border)}
+tr:hover td{background:#1a1a2e}
+details{margin:.8rem 0}
+summary{cursor:pointer;font-weight:700;color:var(--amber);padding:.5rem 0;list-style:none;display:flex;align-items:center;gap:.5rem}
+summary::before{content:'▶';font-size:.7rem;transition:transform .2s}
+details[open] summary::before{transform:rotate(90deg)}
+details>div{padding:.5rem 0 0 1.2rem}
+/* Sudoku mini-grid */
+.sgrid{display:inline-grid;grid-template-columns:repeat(9,28px);gap:1px;background:#333;border:2px solid var(--blue);padding:1px;margin:.5rem 0;font-family:'Source Code Pro',monospace;font-size:.72rem}
+.scell{width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:var(--code-bg);font-weight:700}
+.scell.given{color:var(--amber2)}
+.scell.solved{color:var(--green)}
+.scell.blank{color:var(--muted)}
+.scell.b-right{border-right:2px solid var(--blue)!important}
+.scell.b-bot{border-bottom:2px solid var(--blue)!important}
+</style>
+</head>
+<body>
+<header>
+  <div class="badge">CIS 5210 · AI</div>
+  <h1>Homework 5: Sudoku — Constraint Satisfaction</h1>
+  <p>AC-3 · Hidden Singles · Backtracking with MRV · Model Solutions &amp; Teaching Guide</p>
+</header>
+
+<nav>
+  <button class="active" onclick="show('overview',this)">Overview</button>
+  <button onclick="show('setup',this)">CSP Setup</button>
+  <button onclick="show('ac3',this)">AC-3</button>
+  <button onclick="show('improved',this)">Improved</button>
+  <button onclick="show('guessing',this)">Backtracking</button>
+  <button onclick="show('summary',this)">Summary</button>
+</nav>
+
+<main>
+<!-- ══════════════ OVERVIEW ════════════════════════════ -->
+<section id="overview" class="section active">
+  <h2>Big-Picture Overview</h2>
+  <div class="card">
+    <div class="card-title"><span>🧩</span> Sudoku as a CSP</div>
+    <p>This assignment frames Sudoku as a <strong>Constraint Satisfaction Problem (CSP)</strong> — the same framework used in scheduling, map-colouring, and circuit design. Recognising the three components makes the whole assignment click:</p>
+    <table>
+      <thead><tr><th>CSP component</th><th>Sudoku meaning</th><th>Python representation</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Variables</strong></td><td>The 81 cells</td><td><code>(row, col)</code> tuples</td></tr>
+        <tr><td><strong>Domains</strong></td><td>Possible digits per cell</td><td><code>set of ints 1–9</code></td></tr>
+        <tr><td><strong>Constraints</strong></td><td>≠ between cells in same row/col/block</td><td>Arc list <code>((r1,c1),(r2,c2))</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span>📈</span> Three algorithms of increasing power</div>
+    <table>
+      <thead><tr><th>Method</th><th>Technique</th><th>Solves</th><th>Key idea</th></tr></thead>
+      <tbody>
+        <tr><td><code>infer_ac3</code></td><td>Arc consistency</td><td>Easy</td><td>If neighbour is solved to v, remove v from my domain</td></tr>
+        <tr><td><code>infer_improved</code></td><td>AC-3 + hidden singles</td><td>Medium</td><td>If digit d can go in only one cell of a unit, assign it</td></tr>
+        <tr><td><code>infer_with_guessing</code></td><td>Inference + backtracking</td><td>Hard</td><td>When stuck, guess the cell with fewest options (MRV)</td></tr>
+      </tbody>
+    </table>
+    <span class="pill pill-analogy">Analogy</span>
+    <p>Think of solving Sudoku the way a human expert does: first eliminate obvious impossibilities (AC-3), then spot "this digit can only go here" (hidden singles), and only when completely stuck, pencil in a tentative guess and erase if wrong (backtracking).</p>
+  </div>
+</section>
+
+<!-- ══════════════ CSP SETUP ═══════════════════════════ -->
+<section id="setup" class="section">
+  <h2>CSP Setup: Cells, Arcs, Board</h2>
+
+  <div class="card">
+    <span class="pill pill-mental">Mental Model</span>
+    <div class="card-title"><span>🗃️</span> The board dictionary</div>
+    <p>Instead of a 2-D list of single values, the board is a <strong>dictionary mapping each cell to a SET of possible values</strong>. A solved cell has a singleton set; an unsolved cell has multiple candidates; an empty set signals a contradiction.</p>
+    <div class="tree">board[(0, 0)] = {1, 2, 3, 4, 5, 6, 7, 8, 9}  ← blank cell, anything is possible
+board[(0, 1)] = {1}                            ← solved cell, value = 1
+board[(2, 4)] = {3, 7}                         ← narrowed to two candidates
+board[(5, 2)] = set()                          ← CONTRADICTION — something went wrong</div>
+<pre><span class="kw">def</span> <span class="fn">read_board</span>(path):
+    board = {}
+    <span class="kw">with</span> <span class="fn">open</span>(path) <span class="kw">as</span> f:
+        <span class="kw">for</span> r, line <span class="kw">in</span> <span class="fn">enumerate</span>(f):
+            <span class="kw">for</span> c, ch <span class="kw">in</span> <span class="fn">enumerate</span>(line.<span class="fn">strip</span>()):
+                board[(r,c)] = <span class="fn">set</span>(<span class="fn">range</span>(<span class="num">1</span>,<span class="num">10</span>)) <span class="kw">if</span> ch==<span class="str">'*'</span> <span class="kw">else</span> {<span class="fn">int</span>(ch)}
+    <span class="kw">return</span> board</pre>
+  </div>
+
+  <div class="card">
+    <span class="pill pill-mental">Mental Model</span>
+    <div class="card-title"><span>🔗</span> Arcs — the constraint graph</div>
+    <p>Two cells share an arc if they must hold different values — i.e., they're in the same row, column, or 3×3 block. Arcs are <strong>directed</strong>: both (A→B) and (B→A) are included because the constraint is symmetric but we process each direction separately.</p>
+    <div class="tree">For cell (0,0), its arc neighbours are:
+
+  Same row   : (0,1), (0,2), ..., (0,8)           [8 cells]
+  Same col   : (1,0), (2,0), ..., (8,0)           [8 cells]
+  Same block : (0,1),(0,2),(1,0),(1,1),(1,2),     [8 cells, some overlap with row/col]
+               (2,0),(2,1),(2,2)
+
+  Total unique neighbours: 20 cells
+  Total arcs from (0,0): 20 directed arcs
+
+  Full graph: 81 cells × 20 neighbours = 1620 directed arcs</div>
+<pre><span class="kw">def</span> <span class="fn">sudoku_arcs</span>():
+    arcs = <span class="fn">set</span>()
+    <span class="kw">for</span> r <span class="kw">in</span> <span class="fn">range</span>(<span class="num">9</span>):
+        <span class="kw">for</span> c <span class="kw">in</span> <span class="fn">range</span>(<span class="num">9</span>):
+            cell = (r, c)
+            <span class="kw">for</span> c2 <span class="kw">in</span> <span class="fn">range</span>(<span class="num">9</span>):           <span class="cmt"># same row</span>
+                <span class="kw">if</span> c2 != c: arcs.<span class="fn">add</span>((cell, (r, c2)))
+            <span class="kw">for</span> r2 <span class="kw">in</span> <span class="fn">range</span>(<span class="num">9</span>):           <span class="cmt"># same col</span>
+                <span class="kw">if</span> r2 != r: arcs.<span class="fn">add</span>((cell, (r2, c)))
+            br, bc = (r//<span class="num">3</span>)*<span class="num">3</span>, (c//<span class="num">3</span>)*<span class="num">3</span>  <span class="cmt"># block top-left</span>
+            <span class="kw">for</span> dr <span class="kw">in</span> <span class="fn">range</span>(<span class="num">3</span>):
+                <span class="kw">for</span> dc <span class="kw">in</span> <span class="fn">range</span>(<span class="num">3</span>):
+                    nb = (br+dr, bc+dc)
+                    <span class="kw">if</span> nb != cell: arcs.<span class="fn">add</span>((cell, nb))
+    <span class="kw">return</span> <span class="fn">list</span>(arcs)</pre>
+    <div class="highlight-box">
+      <strong>Why a set first, then list?</strong> A cell at e.g. (0,0) has neighbours in both its row and its block. If we just loop, we'd add the arc ((0,0),(0,1)) twice (once for "row" and once for "block"). Using a <code>set</code> automatically deduplicates.
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ AC-3 ════════════════════════════════ -->
+<section id="ac3" class="section">
+  <h2>AC-3: Arc Consistency</h2>
+
+  <div class="card">
+    <span class="pill pill-mental">Mental Model</span>
+    <div class="card-title"><span>✂️</span> remove_inconsistent_values — the heart of AC-3</div>
+    <span class="pill pill-analogy">Analogy</span>
+    <p>You're filling in a row of Sudoku. Cell 5 is confirmed as 7. You pick up an eraser and remove 7 from every other cell in that row. That's exactly one erasure per confirmed neighbour — at most ONE value is removed per call.</p>
+    <div class="highlight-box">
+      <strong>Key insight:</strong> The constraint is <code>cell1 ≠ cell2</code>. A value <em>v</em> in cell1 is inconsistent only if cell2 has exactly one value <em>and that value is v</em>. This means we can remove at most one value per call. Students who try to remove multiple values per call have misunderstood the arc semantics.
+    </div>
+<pre><span class="kw">def</span> <span class="fn">remove_inconsistent_values</span>(self, cell1, cell2):
+    domain2 = self.board[cell2]
+    <span class="kw">if</span> <span class="fn">len</span>(domain2) != <span class="num">1</span>:      <span class="cmt"># cell2 not yet solved → nothing to remove</span>
+        <span class="kw">return False</span>
+    forced = <span class="fn">next</span>(<span class="fn">iter</span>(domain2))  <span class="cmt"># the one value cell2 is solved to</span>
+    <span class="kw">if</span> forced <span class="kw">in</span> self.board[cell1]:
+        self.board[cell1].<span class="fn">discard</span>(forced)
+        <span class="kw">return True</span>
+    <span class="kw">return False</span></pre>
+    <div class="warn-box">
+      <strong>Common mistake:</strong> Removing ALL values from cell1 that aren't in cell2's domain. That would solve a different (stricter) problem — equality, not inequality. The constraint here is ≠, not =.
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="pill pill-approach">AC-3 Algorithm</span>
+    <div class="card-title"><span>📡</span> infer_ac3 — propagating the ripple</div>
+    <span class="pill pill-analogy">Analogy</span>
+    <p>Imagine sending "I changed!" messages between neighbours. When cell A removes a value from its domain (because neighbour B was solved), A broadcasts to all its own neighbours: "I may have changed — please re-check your constraints on me." The process stops when no one broadcasts anymore.</p>
+    <div class="tree">INITIALISE: queue ← all 1620 arcs
+
+LOOP while queue not empty:
+  pop arc (X, Y)
+  if remove_inconsistent_values(X, Y) removed something:
+    if X's domain is now empty → CONTRADICTION (stop)
+    for each Z that constrains X (Z ≠ Y):
+      add arc (Z, X) to queue  ← Z might now need to update
+
+KEY: only re-queue arcs INTO X (not out of X)
+     because X's domain shrank, not Y's.</div>
+<pre><span class="kw">def</span> <span class="fn">infer_ac3</span>(self):
+    <span class="cmt"># Pre-build: neighbors[cell] = cells that constrain it</span>
+    neighbors = {cell: <span class="fn">set</span>() <span class="kw">for</span> cell <span class="kw">in</span> self.CELLS}
+    <span class="kw">for</span> (x, y) <span class="kw">in</span> self.ARCS:
+        neighbors[y].<span class="fn">add</span>(x)
+
+    queue = <span class="fn">deque</span>(self.ARCS)
+    <span class="kw">while</span> queue:
+        cx, cy = queue.<span class="fn">popleft</span>()
+        <span class="kw">if</span> self.<span class="fn">remove_inconsistent_values</span>(cx, cy):
+            <span class="kw">if not</span> self.board[cx]: <span class="kw">return</span>  <span class="cmt"># empty domain = contradiction</span>
+            <span class="kw">for</span> cz <span class="kw">in</span> neighbors[cx]:
+                <span class="kw">if</span> cz != cy:
+                    queue.<span class="fn">append</span>((cz, cx))  <span class="cmt"># cz may now need to update</span></pre>
+  </div>
+</section>
+
+<!-- ══════════════ IMPROVED ════════════════════════════ -->
+<section id="improved" class="section">
+  <h2>infer_improved: Hidden Singles</h2>
+
+  <div class="card">
+    <span class="pill pill-mental">Mental Model</span>
+    <div class="card-title"><span>🔍</span> What AC-3 misses — the hidden single</div>
+    <p>AC-3 only removes a value when a <em>specific neighbour</em> is already solved. But sometimes a digit can only go in one place within a unit (row/col/block), even though no individual neighbour forced it.</p>
+    <div class="grid2">
+      <div>
+        <h3>What AC-3 can do:</h3>
+        <p>"Cell (0,0) has neighbour (0,5) solved to 7 → remove 7 from (0,0)."</p>
+        <p>This is "naked single" — one cell shrinks to one value.</p>
+      </div>
+      <div>
+        <h3>What infer_improved adds:</h3>
+        <p>"Digit 7 can only fit in (2,6) within this block — all other cells in the block already have 7 eliminated." → Assign 7 to (2,6).</p>
+        <p>This is "hidden single" — one digit has one home in a unit.</p>
+      </div>
+    </div>
+    <div class="highlight-box">
+      <strong>The 27 units:</strong> a Sudoku has 9 rows + 9 columns + 9 blocks = 27 units. For each unit and each digit, count how many cells in that unit can still hold that digit. If the count is 1, assign it.
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="pill pill-approach">Implementation</span>
+    <div class="card-title"><span>🔄</span> infer_improved — loop until stable</div>
+<pre><span class="kw">def</span> <span class="fn">infer_improved</span>(self):
+    units = self.<span class="fn">_build_units</span>()  <span class="cmt"># 27 units (9 rows + 9 cols + 9 blocks)</span>
+    changed = <span class="fn">True</span>
+    <span class="kw">while</span> changed:
+        self.<span class="fn">infer_ac3</span>()           <span class="cmt"># first propagate all known constraints</span>
+        changed = <span class="fn">False</span>
+        <span class="kw">for</span> unit <span class="kw">in</span> units:
+            <span class="kw">for</span> digit <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1</span>, <span class="num">10</span>):
+                candidates = [c <span class="kw">for</span> c <span class="kw">in</span> unit
+                              <span class="kw">if</span> digit <span class="kw">in</span> self.board[c]]
+                <span class="kw">if</span> <span class="fn">len</span>(candidates) == <span class="num">1</span>:  <span class="cmt"># hidden single found!</span>
+                    target = candidates[<span class="num">0</span>]
+                    <span class="kw">if</span> <span class="fn">len</span>(self.board[target]) &gt; <span class="num">1</span>:
+                        self.board[target] = {digit}
+                        changed = <span class="fn">True</span>   <span class="cmt"># run AC-3 again</span></pre>
+    <div class="highlight-box">
+      <strong>Why loop?</strong> Each hidden-single assignment may enable new AC-3 inferences, which may reveal new hidden singles. The outer <code>while changed</code> loop keeps going until no more progress is possible.
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ BACKTRACKING ════════════════════════ -->
+<section id="guessing" class="section">
+  <h2>Backtracking with MRV</h2>
+
+  <div class="card">
+    <span class="pill pill-mental">Mental Model</span>
+    <div class="card-title"><span>🔙</span> When logic isn't enough</div>
+    <span class="pill pill-analogy">Analogy</span>
+    <p>You're filling out a form in pencil. You've used every logical technique and still have cells with 2-3 candidates. Write a tentative value, keep going, and if you find a contradiction (an empty domain), erase back to that tentative entry and try the next option.</p>
+    <div class="tree">infer_with_guessing algorithm:
+
+  1. Run infer_improved (exhaust all logic)
+  2. If all cells solved → SUCCESS ✓
+  3. If any cell has empty domain → CONTRADICTION ✗
+  4. Pick unsolved cell with FEWEST options (MRV heuristic)
+  5. For each candidate value:
+       a. SNAPSHOT the board (deep copy)
+       b. Assign the guess: board[cell] = {value}
+       c. RECURSE (go to step 1)
+       d. If recursion succeeded → propagate solution up
+       e. If recursion failed → RESTORE snapshot, try next value
+  6. If all candidates fail → return FAILURE (backtrack further)</div>
+  </div>
+
+  <div class="card">
+    <span class="pill pill-approach">MRV Heuristic</span>
+    <div class="card-title"><span>⚡</span> Minimum Remaining Values — why it matters</div>
+    <div class="grid2">
+      <div>
+        <h3>Without MRV (random cell):</h3>
+        <p>Pick a cell with 7 options → branch into 7 subtrees. Most branches quickly fail but we've wasted time exploring them.</p>
+      </div>
+      <div>
+        <h3>With MRV (fewest options first):</h3>
+        <p>Pick a cell with 2 options → branch into only 2 subtrees. "Fail-first" — tightly constrained variables surface contradictions fast.</p>
+      </div>
+    </div>
+<pre><span class="cmt"># MRV: pick the unsolved cell with the smallest domain</span>
+cell = <span class="fn">min</span>(
+    (c <span class="kw">for</span> c <span class="kw">in</span> self.CELLS <span class="kw">if</span> <span class="fn">len</span>(self.board[c]) &gt; <span class="num">1</span>),
+    key=<span class="kw">lambda</span> c: <span class="fn">len</span>(self.board[c])
+)</pre>
+    <div class="highlight-box">
+      <strong>Performance impact:</strong> The hard puzzles solve in under 0.05 seconds with MRV. Without MRV (picking randomly), the same puzzles might take seconds or minutes because the search tree is explored in a much less efficient order.
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="pill pill-code">Full implementation</span>
+    <div class="card-title"><span>🔁</span> _backtrack — the recursive engine</div>
+<pre><span class="kw">def</span> <span class="fn">_backtrack</span>(self):
+    self.<span class="fn">infer_improved</span>()             <span class="cmt"># exhaust all logic first</span>
+
+    <span class="kw">if</span> <span class="fn">any</span>(<span class="fn">len</span>(self.board[c])==<span class="num">0</span>
+           <span class="kw">for</span> c <span class="kw">in</span> self.CELLS):
+        <span class="kw">return False</span>                  <span class="cmt"># contradiction</span>
+
+    <span class="kw">if</span> <span class="fn">all</span>(<span class="fn">len</span>(self.board[c])==<span class="num">1</span>
+           <span class="kw">for</span> c <span class="kw">in</span> self.CELLS):
+        <span class="kw">return True</span>                   <span class="cmt"># solved!</span>
+
+    <span class="cmt"># MRV: pick the most constrained unsolved cell</span>
+    cell = <span class="fn">min</span>((c <span class="kw">for</span> c <span class="kw">in</span> self.CELLS <span class="kw">if</span> <span class="fn">len</span>(self.board[c])&gt;<span class="num">1</span>),
+               key=<span class="kw">lambda</span> c: <span class="fn">len</span>(self.board[c]))
+
+    <span class="kw">for</span> value <span class="kw">in</span> <span class="fn">sorted</span>(self.board[cell]):
+        <span class="cmt"># Snapshot before guessing</span>
+        saved = {c: <span class="fn">set</span>(v) <span class="kw">for</span> c, v <span class="kw">in</span> self.board.<span class="fn">items</span>()}
+        self.board[cell] = {value}
+
+        <span class="kw">if</span> self.<span class="fn">_backtrack</span>():
+            <span class="kw">return True</span>               <span class="cmt"># propagate solution up</span>
+
+        self.board = saved            <span class="cmt"># restore on failure</span>
+
+    <span class="kw">return False</span>                      <span class="cmt"># all candidates failed</span></pre>
+  </div>
+</section>
+
+<!-- ══════════════ SUMMARY ════════════════════════════ -->
+<section id="summary" class="section">
+  <h2>Summary &amp; Teaching Checklist</h2>
+
+  <div class="card">
+    <div class="card-title"><span>📋</span> Common student mistakes</div>
+    <ul>
+      <li><strong>remove_inconsistent_values removes multiple values:</strong> The constraint is ≠, not =. The only value that's inconsistent is the one that equals cell2's forced value. At most one value is ever removed per call.</li>
+      <li><strong>Not re-queueing arcs after a domain change in AC-3:</strong> When cell X's domain shrinks, all cells Z that are constrained BY X (i.e. arcs (Z→X)) need to re-run. Students often re-queue arcs OUT of X instead of INTO X.</li>
+      <li><strong>infer_improved without looping:</strong> One pass of hidden-single inference + AC-3 isn't enough. New assignments may enable further deductions. The outer <code>while changed</code> loop is essential.</li>
+      <li><strong>Backtracking without deep-copying:</strong> Restoring <code>self.board = saved</code> only works if <code>saved</code> is a true deep copy. Using <code>saved = self.board</code> (a reference) means changes to <code>self.board</code> corrupt the saved state.</li>
+      <li><strong>Class-level CELLS/ARCS vs instance-level:</strong> <code>CELLS = sudoku_cells()</code> at class level runs ONCE. If put inside <code>__init__</code>, it runs 81 times during backtracking — a major slowdown.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span>🗺️</span> Algorithm comparison</div>
+    <table>
+      <thead><tr><th>Puzzle</th><th>AC-3 alone</th><th>+ Hidden singles</th><th>+ Backtracking</th></tr></thead>
+      <tbody>
+        <tr><td>easy.txt</td><td>✅ Solves</td><td>✅ Solves</td><td>✅ Solves</td></tr>
+        <tr><td>medium1–4.txt</td><td>❌ Partial</td><td>✅ Solves</td><td>✅ Solves</td></tr>
+        <tr><td>hard1–2.txt</td><td>❌ Partial</td><td>❌ Partial</td><td>✅ Solves (~0.03s)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><span>🎓</span> Office hours Q&amp;A</div>
+    <details>
+      <summary>Why are arcs directed if the constraint is symmetric?</summary>
+      <div><p>The constraint A≠B is symmetric, but AC-3 processes arcs one direction at a time. If B is solved to 7, we process arc (A→B) to remove 7 from A. We don't process (B→A) at the same time — that would happen separately. Both directions are included in the queue so the propagation eventually goes both ways.</p></div>
+    </details>
+    <details>
+      <summary>Can remove_inconsistent_values ever remove more than one value?</summary>
+      <div><p>No — by design. The constraint is A≠B. A value v in A is only inconsistent if B's entire domain is {v} (B is forced to v). If B has multiple candidates, no value in A is provably inconsistent: for any v in A, there's some other value in B that differs from v, so the constraint can still be satisfied.</p></div>
+    </details>
+    <details>
+      <summary>Why does infer_improved need to loop?</summary>
+      <div><p>Each hidden-single assignment reduces a cell's domain from multiple values to one. That change may make new AC-3 deductions possible, which may expose new hidden singles. One pass through the 27 units isn't sufficient because the board keeps changing. We loop until a full pass produces no changes — the fixed point.</p></div>
+    </details>
+    <details>
+      <summary>How does MRV speed up backtracking?</summary>
+      <div><p>The "fail-first" principle: a cell with only 2 candidates creates a binary choice point. If one of those 2 leads to a contradiction, we discover it quickly (inference propagates fast). A cell with 7 candidates creates 7 subtrees, most of which may be dead ends that waste time. MRV finds contradictions early, dramatically pruning the search tree.</p></div>
+    </details>
+    <details>
+      <summary>What's the difference between a "naked single" and a "hidden single"?</summary>
+      <div><p><strong>Naked single:</strong> A cell has only one candidate left (AC-3 produces this). <strong>Hidden single:</strong> A cell has multiple candidates, but within its row/column/block, it's the ONLY cell that can hold a particular digit. infer_improved adds hidden-single detection on top of AC-3.</p></div>
+    </details>
+  </div>
+</section>
+
+</main>
+<script>
+function show(id,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
